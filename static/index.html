@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Flight Record upgrader</title>
+    <style type="text/css">
+        body {
+           text-align: center;
+        }
+        form {
+          display: inline-block;
+          margin: 50px;
+        }
+       .footer{ 
+          position: fixed;     
+          bottom: 0;
+          width:100%;
+          text-align: center;
+        }      
+    </style>
+  </head>
+  <body>
+    <h2>Flight ticket upgrader processes the flight records. Then writes the successful entries to the passed record file, The records that fail the validation, get stored in the failed record file. So, that someone can look at them and fix the problem. 
+      Both files get stored inside the uploads folder of the application.
+    </h2>
+    <h3>
+      After the upload, If the files get processed successfully, The passed and failed records of the uploaded file can also be found over these link -
+      <a href="http://localhost:3002/uploads/" target="_blank">Processed files.</a> 
+    </h3>
+    <h3>Instructions For uploading a file:</h3>
+    <p>1. Click on the "Choose Files" button to upload a file.</p>
+    <p>2. Click on the "Upload files" button to send the uploaded files.</p>
+    <form
+      enctype="multipart/form-data"
+      action="http://localhost:3002/upload/flightRecord"
+      method="post">
+      <input type="file" name="flightRecord" multiple/>
+      <input type="submit" value="Upload files"/>
+    </form>
+    <p class="footer">Note: Only CSV file formats are allowed for the file upload, File Upload Size limit is 5 MB</p>
+  </body>
+</html>

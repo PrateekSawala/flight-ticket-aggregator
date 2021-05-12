@@ -1,0 +1,3 @@
+First_name,Last_name,PNR,Fare_class,Travel_date,Pax,Ticketing_date,Email,Mobile_phone,Booked_cabin,Error
+Mon,San,PQ234,C,2019-08-30,2,2019-05-22,mon@zzz.com,9874563211,Economy,PNR invalid
+Rad,Sur,ZZZ345,T,2019-05-31,4,2019-05-21,rad@zzz,9865743212,Economy,Email invalid

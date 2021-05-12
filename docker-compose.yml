@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+
+  test:
+    image: test:test
+    restart: always
+    container_name: test
+    ports:
+      - 3002:80
+    volumes:
+        - ./import:/import
+        - ./static:/static
+        - ./templates:/templates
+        - ./uploads:/uploads
+    environment:
+      - TEST_PORT=:80
