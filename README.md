@@ -10,7 +10,7 @@ Below is a list of API endpoint with their respective input and output.
 
 The API processes the input file sent via the request over the endpoint. Then write it to the passed record file. The records that fail the validation, get stored in the failed record file. So, that someone can look at them and fix the problem. Both files get stored inside the uploads folder.
 
-## Flight Record schema 
+### Flight Record schema 
 ```
 First_name, Last_name, PNR, Fare_class, Travel_date, Pax, Ticketing_date, Email, Mobile_phone, Booked_cabin
 ```
@@ -34,13 +34,13 @@ POST
 ```json
 [
     {
-        "Upload":   <Upload Status>,
-        "Filename": <Uploaded Filename>,
+        "Upload":   "File_Upload_Status",
+        "Filename": "Uploaded_Filename",
         "Records": {
-            "PassedRecordFileName": <Passed Record FileName>,
-            "FailedRecordFileName": <Failed Record FileName>,
-            "PassedRecordFilePathUrl": <Passed Record File Path Url>,
-            "FailedRecordFilePathUrl": <Failed Record File Path Url>
+            "PassedRecordFileName": "Passed_Record_FileName",
+            "FailedRecordFileName": "Failed_Record_FileName",
+            "PassedRecordFilePathUrl": "Passed_Record_FilePath_Url",
+            "FailedRecordFilePathUrl": "Failed_Record_FilePath_Url"
         }
     },
 ]
