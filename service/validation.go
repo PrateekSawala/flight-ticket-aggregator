@@ -72,7 +72,7 @@ func IsRecordsColumnValid(flightRecord []string) error {
 	return nil
 }
 
-func IsRecordValid(flightRecord domain.SingleFlightRecord) error {
+func IsRecordValid(flightRecord domain.FlightRecord) error {
 	if err := IsMailValid(flightRecord.Email); err != nil {
 		return err
 	}

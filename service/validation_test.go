@@ -13,7 +13,7 @@ func TestIsRecordsColumnValid(t *testing.T) {
 }
 
 func TestIsRecordValid(t *testing.T) {
-	record := domain.SingleFlightRecord{
+	record := domain.FlightRecord{
 		FirstName:     "Abhishek",
 		LastName:      "Kumar",
 		PNR:           "ABC123",
@@ -49,7 +49,7 @@ func TestIsRecordsColumnIndexesValidationFailure(t *testing.T) {
 }
 
 func TestIsRecordPNRValidationFailure(t *testing.T) {
-	record := domain.SingleFlightRecord{
+	record := domain.FlightRecord{
 		FirstName:     "Abhishek",
 		LastName:      "Kumar",
 		PNR:           "ABC",
@@ -68,7 +68,7 @@ func TestIsRecordPNRValidationFailure(t *testing.T) {
 }
 
 func TestIsRecordMailValidationFailure(t *testing.T) {
-	record := domain.SingleFlightRecord{
+	record := domain.FlightRecord{
 		FirstName:     "Abhishek",
 		LastName:      "Kumar",
 		PNR:           "ABC123",
@@ -87,7 +87,7 @@ func TestIsRecordMailValidationFailure(t *testing.T) {
 }
 
 func TestIsRecordPhoneValidationFailure(t *testing.T) {
-	record := domain.SingleFlightRecord{
+	record := domain.FlightRecord{
 		FirstName:     "Abhishek",
 		LastName:      "Kumar",
 		PNR:           "ABC123",
@@ -106,7 +106,7 @@ func TestIsRecordPhoneValidationFailure(t *testing.T) {
 }
 
 func TestIsRecordTicketingDateBeforeTravelDateValidationFailure(t *testing.T) {
-	record := domain.SingleFlightRecord{
+	record := domain.FlightRecord{
 		FirstName:     "Abhishek",
 		LastName:      "Kumar",
 		PNR:           "ABC123",
@@ -125,7 +125,7 @@ func TestIsRecordTicketingDateBeforeTravelDateValidationFailure(t *testing.T) {
 }
 
 func TestIsRecordCabinValidValidationFailure(t *testing.T) {
-	record := domain.SingleFlightRecord{
+	record := domain.FlightRecord{
 		FirstName:     "Abhishek",
 		LastName:      "Kumar",
 		PNR:           "ABC123",

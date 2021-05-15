@@ -1,6 +1,6 @@
 package domain
 
-type SingleFlightRecord struct {
+type FlightRecord struct {
 	FirstName     string
 	LastName      string
 	PNR           string

@@ -81,7 +81,7 @@ func ProcessRecords(records [][]string, passedRecordName string, failedRecordNam
 			continue
 		}
 
-		flightRecord := PrepareSingleFlightRecord(recordEntry)
+		flightRecord := PrepareFlightRecord(recordEntry)
 		recordErr := IsRecordValid(flightRecord)
 		if recordErr == nil {
 			if !passedRecordCreated {
@@ -200,8 +200,8 @@ func GetDiscountCode(class string) (string, error) {
 	return offerCode, nil
 }
 
-func PrepareSingleFlightRecord(recordEntry []string) domain.SingleFlightRecord {
-	return domain.SingleFlightRecord{
+func PrepareFlightRecord(recordEntry []string) domain.FlightRecord {
+	return domain.FlightRecord{
 		FirstName:     recordEntry[0],
 		LastName:      recordEntry[1],
 		PNR:           recordEntry[2],
