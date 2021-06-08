@@ -157,7 +157,7 @@ func InitWriter(recordPath string, typeRecord string) (*os.File, *csv.Writer, er
 
 	recordWriter := csv.NewWriter(record)
 	newEntry := domain.Error
-	if typeRecord == "passed" {
+	if typeRecord == domain.TypeRecordPassed {
 		newEntry = domain.DiscountCode
 	}
 

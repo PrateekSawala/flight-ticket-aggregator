@@ -61,7 +61,7 @@ func IsCabinValid(cabin string) error {
 }
 
 func IsRecordsColumnValid(flightRecord []string) error {
-	if len(flightRecord) < 10 {
+	if len(flightRecord) != 10 {
 		return domain.ErrInvalidFile
 	}
 	for index, record := range flightRecord {

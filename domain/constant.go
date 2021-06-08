@@ -50,6 +50,7 @@ const (
 	/* FlightRecord Time Format */
 	FlightRecordTimeFormat = "2006-01-02"
 
+	/* Phone */
 	PhoneDialCode = "+91"
 
 	/* http Request constants */

@@ -1,6 +1,6 @@
 ## Overview
 
-Flight ticket upgrader processes the flight Records to send an email, offering a discount on upgrade to a higher class, to all the passengers who have booked tickets on its flights.
+Flight ticket aggregator processes the flight Records to send an email, offering a discount on upgrade to a higher class, to all the passengers who have booked tickets on its flights.
 
 ## API
 
@@ -81,6 +81,6 @@ After Starting the server via the **make run** command the GUI will be available
 The docker file has been added with the application along with the docker-compose file, The docker image can be created using the **make image** command which later can get used by the docker-compose file to serve the application over the path [Url](http://localhost:3002) for the **GUI** access.
 
 
-## Integration test
+## Unit test
 
-The Integration tests have been added with the application inside the service folder for testing out the upload of a file with a test flight-record **flightRecord.csv** present inside the template folder and compare the results obtained via upload with the expected results, The integration-tests also contains the tests over validation checks for detecting the correctness of the file record entries. The integration test can be executed using the **make test** command.
+The unit tests have been added with the application inside the service folder for performing unit tests on the business logic of the application.
