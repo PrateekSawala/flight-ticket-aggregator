@@ -31,9 +31,9 @@ lint: $(TOOLS_DIR)/golangci-lint/golangci-lint
 	
 .PHONY: test
 test:
-	-go test -v -cover -coverprofile=cover.out -covermode=atomic ./service/...
+	-go test -v -cover -coverprofile=cover.out -covermode=atomic ./endpoint/... ./service/...
 	go tool cover -html=cover.out -o cover.html	
- 
+	
 .PHONY: image
 image: build
 	docker build -t test:test -f Dockerfile ./bin/.

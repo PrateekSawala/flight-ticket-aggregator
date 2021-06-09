@@ -15,8 +15,7 @@ import (
 )
 
 var (
-	uploadFolderPath string
-	PNRs             map[string]bool
+	PNRs map[string]bool
 )
 
 func UploadFlightRecord(filename string, flightRecord []byte) (*domain.Record, error) {
@@ -134,13 +133,8 @@ func releaseResources(file *os.File, writer *csv.Writer) {
 }
 
 func CreateRecords(recordPath string) (*os.File, error) {
-	// Check if templateFolderPath is provided or not
-	basePath := domain.UploadFolder
-	if uploadFolderPath != "" {
-		basePath = uploadFolderPath
-	}
 
-	newRecordPath := fmt.Sprintf("%s/%s", basePath, recordPath)
+	newRecordPath := fmt.Sprintf("../%s/%s", domain.UploadFolder, recordPath)
 	// Create new record file
 	record, err := os.Create(newRecordPath)
 	if err != nil {

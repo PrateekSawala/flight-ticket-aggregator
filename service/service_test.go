@@ -26,7 +26,6 @@ func TestInputFlightRecordSuccess(t *testing.T) {
 	// Open the test file
 	filename := TestFlightRecord
 	importfile := fmt.Sprintf("../%s/%s", domain.TemplateFolder, filename)
-	uploadFolderPath = fmt.Sprintf("../%s", domain.UploadFolder)
 
 	fileBuffer, err := ioutil.ReadFile(importfile)
 	if err != nil {
@@ -45,7 +44,6 @@ func TestInputFlightRecordSuccess(t *testing.T) {
 
 func TestInputFlightRecordFailure(t *testing.T) {
 	// Upload folder path
-	uploadFolderPath = fmt.Sprintf("../%s", domain.UploadFolder)
 
 	t.Run("Should return error of invalid file", func(t *testing.T) {
 		// Open the test file
