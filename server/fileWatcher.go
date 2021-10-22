@@ -25,7 +25,7 @@ func fileWatcher() {
 
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
-		log.Traceln("watcher-error ", err)
+		log.Tracef("watcher-error %s", err)
 	}
 	defer watcher.Close()
 
@@ -51,7 +51,7 @@ func fileWatcher() {
 
 	err = watcher.Add(watcherFolderPath)
 	if err != nil {
-		log.Traceln(err)
+		log.Tracef("watcher.Add error %s", err)
 	}
 	<-done
 }

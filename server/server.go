@@ -39,7 +39,7 @@ func Run() {
 			if err == http.ErrServerClosed {
 				log.Info("Server shut down.")
 			} else {
-				log.WithError(err).WithField("server_port", srv.Addr).Fatal("failed to start server")
+				log.Error("failed to start server", err)
 			}
 		}
 	}()
