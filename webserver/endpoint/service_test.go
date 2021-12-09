@@ -8,6 +8,7 @@ import (
 
 	"flight-ticket-aggregator/domain/logging"
 	"flight-ticket-aggregator/space/rpc/space"
+
 	"github.com/stretchr/testify/assert"
 
 	"flight-ticket-aggregator/domain"
@@ -17,10 +18,12 @@ func TestUploadFlightRecordError(t *testing.T) {
 	endpointLogger := logging.Log("TestUploadFlightRecordError").LogrusEntry
 	service := WebService{Logger: endpointLogger}
 
-	files := []*multipart.FileHeader{&multipart.FileHeader{Filename: "test.csv"}}
+	files := []*multipart.FileHeader{}
+	files = append(files, &multipart.FileHeader{Filename: "test.csv"})
 
 	response, err := service.UploadFlightRecords(files)
-	expectedResponse := []*domain.FileStatus{&domain.FileStatus{Upload: false, Filename: "test.csv"}}
+	expectedResponse := []*domain.FileStatus{}
+	expectedResponse = append(expectedResponse, &domain.FileStatus{Upload: false, Filename: "test.csv"})
 
 	assert.NoError(t, err)
 	assert.Equal(t, expectedResponse, response)

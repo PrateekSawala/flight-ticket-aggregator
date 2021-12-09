@@ -10,6 +10,7 @@ import (
 
 	"flight-ticket-aggregator/domain"
 	"flight-ticket-aggregator/ticket/rpc/ticket"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,6 +21,7 @@ var (
 func TestInputFlightRecordSuccess(t *testing.T) {
 	// Open the test file
 	filename := domain.TestFlightRecord
+
 	importfile := fmt.Sprintf("../../templates/%s", filename)
 
 	// Read file

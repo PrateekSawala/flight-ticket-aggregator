@@ -1,7 +1,9 @@
 # github.com/afiskon/promtail-client v0.0.0-20190305142237-506f3f921e9c
+## explicit
 github.com/afiskon/promtail-client/logproto
 github.com/afiskon/promtail-client/promtail
-# github.com/aws/aws-sdk-go v1.41.9
+# github.com/aws/aws-sdk-go v1.42.9
+## explicit; go 1.11
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/arn
 github.com/aws/aws-sdk-go/aws/awserr
@@ -52,56 +54,84 @@ github.com/aws/aws-sdk-go/service/sso/ssoiface
 github.com/aws/aws-sdk-go/service/sts
 github.com/aws/aws-sdk-go/service/sts/stsiface
 # github.com/bclicn/color v0.0.0-20180711051946-108f2023dc84
+## explicit
 github.com/bclicn/color
 # github.com/davecgh/go-spew v1.1.1
+## explicit
 github.com/davecgh/go-spew/spew
-# github.com/fsnotify/fsnotify v1.4.9
+# github.com/fsnotify/fsnotify v1.5.1
+## explicit; go 1.13
 github.com/fsnotify/fsnotify
 # github.com/go-kit/kit v0.12.0
+## explicit; go 1.17
 github.com/go-kit/kit/endpoint
 github.com/go-kit/kit/log/logrus
 github.com/go-kit/kit/transport
 github.com/go-kit/kit/transport/http
 # github.com/go-kit/log v0.2.0
+## explicit; go 1.17
 github.com/go-kit/log
 # github.com/go-logfmt/logfmt v0.5.1
+## explicit; go 1.17
 github.com/go-logfmt/logfmt
 # github.com/go-mail/mail v2.3.1+incompatible
+## explicit
 github.com/go-mail/mail
 # github.com/golang/protobuf v1.5.2
+## explicit; go 1.9
 github.com/golang/protobuf/proto
 github.com/golang/protobuf/ptypes/timestamp
-# github.com/golang/snappy v0.0.3
+# github.com/golang/snappy v0.0.4
+## explicit
 github.com/golang/snappy
 # github.com/gosuri/uilive v0.0.4
+## explicit; go 1.10
 github.com/gosuri/uilive
 # github.com/jmespath/go-jmespath v0.4.0
+## explicit; go 1.14
 github.com/jmespath/go-jmespath
 # github.com/magefile/mage v1.11.0
+## explicit; go 1.12
 github.com/magefile/mage/internal
 github.com/magefile/mage/mage
 github.com/magefile/mage/mg
 github.com/magefile/mage/parse
 github.com/magefile/mage/sh
 # github.com/mattn/go-isatty v0.0.14
+## explicit; go 1.12
 github.com/mattn/go-isatty
-# github.com/nyaruka/phonenumbers v1.0.68
+# github.com/nyaruka/phonenumbers v1.0.73
+## explicit; go 1.16
 github.com/nyaruka/phonenumbers
 # github.com/pmezard/go-difflib v1.0.0
+## explicit
 github.com/pmezard/go-difflib/difflib
 # github.com/sirupsen/logrus v1.8.1
+## explicit; go 1.13
 github.com/sirupsen/logrus
 # github.com/stretchr/testify v1.7.0
+## explicit; go 1.13
 github.com/stretchr/testify/assert
 # github.com/twitchtv/twirp v8.1.0+incompatible
+## explicit
 github.com/twitchtv/twirp
 github.com/twitchtv/twirp/ctxsetters
 github.com/twitchtv/twirp/internal/contextkeys
 # golang.org/x/sys v0.0.0-20210917161153-d61c044b1678
+## explicit; go 1.17
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
+# golang.org/x/text v0.3.7
+## explicit; go 1.17
+golang.org/x/text/internal/format
+golang.org/x/text/internal/language
+golang.org/x/text/internal/language/compact
+golang.org/x/text/internal/tag
+golang.org/x/text/language
+golang.org/x/text/language/display
 # google.golang.org/protobuf v1.27.1
+## explicit; go 1.9
 google.golang.org/protobuf/encoding/protojson
 google.golang.org/protobuf/encoding/prototext
 google.golang.org/protobuf/encoding/protowire
@@ -133,6 +163,8 @@ google.golang.org/protobuf/runtime/protoimpl
 google.golang.org/protobuf/types/descriptorpb
 google.golang.org/protobuf/types/known/timestamppb
 # gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc
+## explicit
 gopkg.in/alexcesaro/quotedprintable.v3
-# gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+# gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
+## explicit
 gopkg.in/yaml.v3

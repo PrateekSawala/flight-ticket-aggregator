@@ -79,15 +79,14 @@ func ProcessRecords(records [][]string, flightRecordInfo *domain.FightRecordInfo
 	log := logging.Log("ProcessRecords")
 	response := &ticket.ProcessFlightRecordResponse{}
 
-	passedRecord, failedRecord := &bytes.Buffer{}, &bytes.Buffer{}
-	passedRecordWriter, failedRecordWriter := &csv.Writer{}, &csv.Writer{}
-	passedRecordCreated, failedRecordCreated := false, false
+	flightRecordName := strings.TrimSuffix(flightRecordInfo.Filename, filepath.Ext(flightRecordInfo.Filename))
+
+	// Declare flightRecord writers
+	flightRecordWriters := map[string]*domain.FlightRecordWriter{}
+	flightRecordWriters[domain.TypeRecordPassed] = &domain.FlightRecordWriter{Filename: fmt.Sprintf("%s_passedRecord.csv", flightRecordName), Filepath: flightRecordInfo.Filepath, TypeRecord: domain.TypeRecordPassed, File: &bytes.Buffer{}, FileWriter: &csv.Writer{}}
+	flightRecordWriters[domain.TypeRecordFailed] = &domain.FlightRecordWriter{Filename: fmt.Sprintf("%s_failedRecord.csv", flightRecordName), Filepath: flightRecordInfo.Filepath, TypeRecord: domain.TypeRecordFailed, File: &bytes.Buffer{}, FileWriter: &csv.Writer{}}
+
 	recordedPNRs := map[string]bool{}
-
-	recordName := strings.TrimSuffix(flightRecordInfo.Filename, filepath.Ext(flightRecordInfo.Filename))
-	passedRecordFileName := fmt.Sprintf("%s_passedRecord.csv", recordName)
-	failedRecordFileName := fmt.Sprintf("%s_failedRecord.csv", recordName)
-
 	// Loop over all records
 	for i := range records {
 		recordEntry := records[i]
@@ -98,64 +97,41 @@ func ProcessRecords(records [][]string, flightRecordInfo *domain.FightRecordInfo
 			}
 			continue
 		}
-		flightRecord := PrepareFlightRecord(recordEntry)
-		recordErr := IsRecordValid(recordedPNRs, flightRecord)
-		if recordErr == nil {
-			if !passedRecordCreated {
-				passedRecordWriterResp, passedRecordError := InitWriter(passedRecord, domain.TypeRecordPassed)
-				if passedRecordError != nil {
-					return response, passedRecordError
-				}
-				passedRecordWriter = passedRecordWriterResp
-				passedRecordCreated = true
-			}
-			passedRecordError := WriteRecord(passedRecordWriter, append(recordEntry, GetDiscountCode(flightRecord.FareClass)))
-			if passedRecordError != nil {
-				log.Errorf("Error while writing flight passed record of file %s,  %+v , error: %s", passedRecordFileName, recordEntry, passedRecordError)
-			}
+		flightRecordEntry := PrepareFlightRecord(recordEntry)
+		flightRecordWriter := flightRecordWriters[domain.TypeRecordPassed]
+		recordErr := IsRecordValid(recordedPNRs, flightRecordEntry)
+		if recordErr != nil {
+			recordEntry = append(recordEntry, recordErr.Error())
+			flightRecordWriter = flightRecordWriters[domain.TypeRecordFailed]
 		} else {
-			if !failedRecordCreated {
-				failedRecordWriterResp, failedRecordError := InitWriter(failedRecord, domain.TypeRecordFailed)
-				if failedRecordError != nil {
-					return response, failedRecordError
-				}
-				failedRecordWriter = failedRecordWriterResp
-				failedRecordCreated = true
-			}
-			err := WriteRecord(failedRecordWriter, append(recordEntry, recordErr.Error()))
-			if err != nil {
-				log.Errorf("Error while writing flight failed record of file %s, %+v , error: %s", failedRecordFileName, recordEntry, err)
-			}
+			recordEntry = append(recordEntry, GetDiscountCode(flightRecordEntry.FareClass))
 		}
-		recordedPNRs[flightRecord.PNR] = true
-	}
-	if passedRecordCreated {
-		response.PassedRecordFileName = passedRecordFileName
-		passedRecordWriter.Flush()
-		_, err := spaceService.SaveFile(context.Background(), &space.SaveFileInput{Filename: passedRecordFileName, Filepath: flightRecordInfo.Filepath, File: passedRecord.Bytes()})
+		err := WriteFlightRecord(flightRecordWriter, recordEntry)
 		if err != nil {
-			log.Errorf("Error while saving file to s3 path: %s/%s, error: %s", flightRecordInfo.Filepath, passedRecordFileName, err)
-		} else {
-			response.PassedRecordFilePathUrl = fmt.Sprintf("%s/%s/%s/%s", *webServerHostName, domain.DownloadFlightRecordPath, flightRecordInfo.Filepath, passedRecordFileName)
+			log.Errorf("Error while writing %s flight record of filename %s with recordEntry %+v , error: %s", flightRecordWriter.TypeRecord, flightRecordWriter.Filename, recordEntry, err)
 		}
+		recordedPNRs[flightRecordEntry.PNR] = true
 	}
-	if failedRecordCreated {
-		response.FailedRecordFileName = failedRecordFileName
-		failedRecordWriter.Flush()
-		_, err := spaceService.SaveFile(context.Background(), &space.SaveFileInput{Filename: failedRecordFileName, Filepath: flightRecordInfo.Filepath, File: failedRecord.Bytes()})
-		if err != nil {
-			log.Errorf("Error while saving file to s3 path: %s/%s, error: %s", flightRecordInfo.Filepath, failedRecordFileName, err)
-		} else {
-			response.FailedRecordFilePathUrl = fmt.Sprintf("%s/%s/%s/%s", *webServerHostName, domain.DownloadFlightRecordPath, flightRecordInfo.Filepath, failedRecordFileName)
-		}
-	}
+	SaveFlightRecord(flightRecordWriters, response, log)
 	return response, nil
 }
 
-func InitWriter(buffer *bytes.Buffer, typeRecord string) (*csv.Writer, error) {
-	if typeRecord != domain.TypeRecordPassed && typeRecord != domain.TypeRecordFailed {
-		return nil, domain.ErrInvalidInput
+func WriteFlightRecord(flightRecordWriter *domain.FlightRecordWriter, recordEntry []string) error {
+	if flightRecordWriter.TypeRecord != domain.TypeRecordPassed && flightRecordWriter.TypeRecord != domain.TypeRecordFailed {
+		return domain.ErrInvalidInput
 	}
+	if !flightRecordWriter.IsFileCreated {
+		recordWriterResp, err := InitWriter(flightRecordWriter.File, domain.TypeRecordPassed)
+		if err != nil {
+			return err
+		}
+		flightRecordWriter.FileWriter = recordWriterResp
+		flightRecordWriter.IsFileCreated = true
+	}
+	return WriteRecord(flightRecordWriter.FileWriter, recordEntry)
+}
+
+func InitWriter(buffer *bytes.Buffer, typeRecord string) (*csv.Writer, error) {
 	recordWriter := csv.NewWriter(buffer)
 	newEntry := domain.RecordError
 	if typeRecord == domain.TypeRecordPassed {
@@ -177,6 +153,30 @@ func WriteRecord(writer *csv.Writer, recordEntry []string) error {
 		return err
 	}
 	return nil
+}
+
+func SaveFlightRecord(flightRecordWriters map[string]*domain.FlightRecordWriter, response *ticket.ProcessFlightRecordResponse, log *logging.Logger) {
+	for _, flightRecordWriter := range flightRecordWriters {
+		if !flightRecordWriter.IsFileCreated {
+			return
+		}
+		flightRecordWriter.FileWriter.Flush()
+		spacePathUrl := ""
+		_, err := spaceService.SaveFile(context.Background(), &space.SaveFileInput{Filename: flightRecordWriter.Filename, Filepath: flightRecordWriter.Filepath, File: flightRecordWriter.File.Bytes()})
+		if err != nil {
+			log.Errorf("Error while saving file to s3 path: %s/%s, error: %s", flightRecordWriter.Filepath, flightRecordWriter.Filename, err)
+		} else {
+			spacePathUrl = fmt.Sprintf("%s/%s/%s/%s", *webServerHostName, domain.DownloadFlightRecordPath, flightRecordWriter.Filepath, flightRecordWriter.Filename)
+		}
+		if flightRecordWriter.TypeRecord == domain.TypeRecordPassed {
+			response.PassedRecordFileName = flightRecordWriter.Filename
+			response.PassedRecordFilePathUrl = spacePathUrl
+		}
+		if flightRecordWriter.TypeRecord == domain.TypeRecordFailed {
+			response.FailedRecordFileName = flightRecordWriter.Filename
+			response.FailedRecordFilePathUrl = spacePathUrl
+		}
+	}
 }
 
 func GetDiscountCode(class string) string {
