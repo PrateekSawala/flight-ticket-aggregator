@@ -12,6 +12,18 @@ var (
 		First:          true,
 	}
 
+	ValidAirlines = map[string]bool{
+		Airline1: true,
+		Airline2: true,
+		Airline3: true,
+	}
+
+	AirlinesMails = map[string]string{
+		Airline1: "airline1@mail.com",
+		Airline2: "airline2@mail.com",
+		Airline3: "airline3@mail.com",
+	}
+
 	RecordColumns = []string{"First_name", "Last_name", "PNR", "Fare_class", "Travel_date", "Pax", "Ticketing_date", "Email", "Mobile_phone", "Booked_cabin"}
 
 	ValidRecordIndexes = map[int]string{
@@ -37,38 +49,49 @@ const (
 	Empty = ""
 
 	/* Discount offers */
+
 	DiscountCode20 = "OFFER_20"
 	DiscountCode30 = "OFFER_30"
 	DiscountCode25 = "OFFER_25"
 
 	/* Cabin Types */
+
 	Economy        = "Economy"
 	PremiumEconomy = "Premium Economy"
 	Business       = "Business"
 	First          = "First"
 
-	/* FlightRecord Time Format */
+	/* FlightRecord Time Formats */
+
 	FlightRecordTimeFormat = "2006-01-02"
 
-	/* Phone */
+	/* Phone Dial Codes */
+
 	PhoneDialCode = "+91"
 
 	/* http Request constants */
-	ContentType  = "content-type"
-	MimeFormData = "multipart/form-data"
 
-	FlightRecordFormKey = "flightRecord"
+	HttpContentTypeHeaderContentType = "content-type"
+	MimeTypeFormData                 = "multipart/form-data"
+	MimeTypeJsonFormData             = "application/json"
+	HttpAcceptHeader                 = "accept"
 
-	/* Allowed file type */
+	FlightRecordKey = "flightRecord"
+
+	DownloadFlightRecordPath = "download"
+
+	/* Allowed file types */
+
 	TypeFileContentText = "text/plain"
 
 	/* Application folder names */
-	WatcherFolder  = "import"
+
 	TemplateFolder = "templates"
 	UploadFolder   = "uploads"
 	ProjectFolder  = "Flight-Ticket-Aggregator"
 
 	/* Flight Record Entries */
+
 	FirstName     = "First_name"
 	LastName      = "Last_name"
 	PNR           = "PNR"
@@ -80,13 +103,68 @@ const (
 	MobilePhone   = "Mobile_phone"
 	BookedCabin   = "Booked_cabin"
 	DiscountCode  = "Discount_code"
-	Error         = "Error"
-
-	SMTP_PORT     = 0
-	SMTP_HOST     = ""
-	SMTP_USER     = ""
-	SMTP_PASSWORD = ""
+	RecordError   = "Error"
 
 	TypeRecordPassed = "passed"
 	TypeRecordFailed = "failed"
+
+	TestFlightRecord      = "airline1_2020-10-30_flightRecord.csv"
+	TestEmptyFlightRecord = "airline1_2020-10-30_testEmptyFlightRecord.csv"
+
+	/* Environments */
+
+	LocalEnv = "local"
+
+	/* Airlines */
+
+	Airline1 = "airline1"
+	Airline2 = "airline2"
+	Airline3 = "airline3"
+
+	/* Fixed Length */
+
+	FlightRecordNameEntriesLength       = 3
+	FlightRecordEntriesLength           = 10
+	FlightRecordPNREntryLength          = 6
+	FlightRecordEmailEntryMinimumLength = 3
+	FlightRecordEmailEntryMaximumLength = 254
+
+	/* Fare classes */
+
+	FareClassA = 65
+	FareClassB = 69
+	FareClassF = 70
+	FareClassK = 75
+	FareClassL = 76
+	FareClassR = 82
+
+	/* Return messages */
+
+	MissingArgument      = "missing_argument"
+	InvalidArgument      = "invalid_argument"
+	NotFound             = "not_found"
+	InternalError        = "internal_error"
+	InvalidRequest       = "invalid_request"
+	InvalidContentType   = "invalid_contentType"
+	InvalidFile          = "invalid_file"
+	FileNotFound         = "file_not_found"
+	InvalidFilename      = "invalid_filename"
+	EmptyFile            = "empty_file"
+	InvalidTypeAssetion  = "invalid_type_assetion"
+	InvalidInput         = "invalid_input"
+	EmptyInput           = "empty_input"
+	InvalidAirline       = "invalid_airline"
+	TryAgainLater        = "try_Again_later"
+	InvalidRequestMethod = "invalid_request_method"
+
+	InvalidMail          = "email_invalid"
+	InvalidPhone         = "phone_invalid"
+	InvalidCabin         = "cabin_invalid"
+	InvalidPNR           = "PNR_invalid"
+	InvalidFareClass     = "fare_class_invalid"
+	InvalidTicketingDate = "ticketing_date_invalid"
+	InvalidTravelDate    = "travel_date_invalid"
+	InvalidUploadedDate  = "uploaded_date_invalid"
+	InvalidBooking       = "booking_invalid"
+	PNRRepeated          = "PNR_must_be_unique"
 )

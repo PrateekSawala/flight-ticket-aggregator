@@ -3,29 +3,35 @@ package domain
 import "errors"
 
 var (
-	// General errors
-	ErrMissingArgument    = errors.New("missing_argument")
-	ErrInvalidArgument    = errors.New("invalid_argument")
-	ErrNotFound           = errors.New("not_found")
-	ErrInternal           = errors.New("internal_error")
-	ErrInvalidRequest     = errors.New("invalid_request")
-	ErrInvalidContentType = errors.New("invalid_content-type")
-	ErrInvalidFile        = errors.New("invalid_file")
-	ErrEmptyFile          = errors.New("empty_file")
-	ErrTypeAssetion       = errors.New("invalid_type_assetion")
-	ErrInvalidInput       = errors.New("invalid_input")
+	/* General errors */
 
-	// Validation errors
-	ErrInvalidMail    = errors.New("Email invalid")
-	ErrInvalidPhone   = errors.New("Phone invalid")
-	ErrInvalidCabin   = errors.New("Cabin invalid")
-	ErrInvalidPNR     = errors.New("PNR invalid")
-	ErrTicketingDate  = errors.New("Ticketing Date invalid")
-	ErrTravelDate     = errors.New("Travel Date invalid")
-	ErrInvalidBooking = errors.New("Booking invalid")
-	ErrPNRRepeated    = errors.New("PNR Must Be Unique")
+	ErrMissingArgument      = errors.New(MissingArgument)
+	ErrInvalidArgument      = errors.New(InvalidArgument)
+	ErrNotFound             = errors.New(NotFound)
+	ErrInternal             = errors.New(InternalError)
+	ErrInvalidRequest       = errors.New(InvalidRequest)
+	ErrInvalidContentType   = errors.New(InvalidContentType)
+	ErrInvalidFile          = errors.New(InvalidFile)
+	ErrInvalidFilename      = errors.New(InvalidFilename)
+	ErrEmptyFile            = errors.New(EmptyFile)
+	ErrFileNotFound         = errors.New(FileNotFound)
+	ErrInvalidTypeAssetion  = errors.New(InvalidTypeAssetion)
+	ErrInvalidInput         = errors.New(InvalidInput)
+	ErrEmptyInput           = errors.New(EmptyInput)
+	ErrInvalidAirline       = errors.New(InvalidAirline)
+	ErrTryAgainLater        = errors.New(TryAgainLater)
+	ErrInvalidRequestMethod = errors.New(InvalidRequestMethod)
 
-	// Records errors
-	ErrPassedRecord = errors.New("")
-	ErrFailedRecord = errors.New("")
+	/* Record Validation errors */
+
+	ErrInvalidMail      = errors.New(InvalidMail)
+	ErrInvalidPhone     = errors.New(InvalidPhone)
+	ErrInvalidCabin     = errors.New(InvalidCabin)
+	ErrInvalidPNR       = errors.New(InvalidPNR)
+	ErrInvalidFareClass = errors.New(InvalidFareClass)
+	ErrTicketingDate    = errors.New(InvalidTicketingDate)
+	ErrTravelDate       = errors.New(InvalidTravelDate)
+	ErrUploadedDate     = errors.New(InvalidUploadedDate)
+	ErrInvalidBooking   = errors.New(InvalidBooking)
+	ErrPNRRepeated      = errors.New(PNRRepeated)
 )

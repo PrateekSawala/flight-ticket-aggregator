@@ -1,4 +1,0 @@
-First_name,Last_name,PNR,Fare_class,Travel_date,Pax,Ticketing_date,Email,Mobile_phone,Booked_cabin,Discount_code
-Abh,Ku,ABC123,F,2019-07-31,2,2019-05-21,abh@zzz.com,984093210,Economy,OFFER_30
-Kal,Ben,A1B2C3,M,2019-06-30,1,2019-05-21,kben@zzz.com,984563213,Premium Economy,OFFER_25
-Som,Bat,X1Y2Z4,Z,2019-07-25,3,2019-05-02,sbat@zzz.com,9876543214,Economy,

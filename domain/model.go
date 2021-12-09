@@ -13,15 +13,14 @@ type FlightRecord struct {
 	BookedCabin   string
 }
 
+type FightRecordInfo struct {
+	Filename    string
+	Filepath    string
+	AirlineName string
+}
+
 type FileStatus struct {
 	Upload   bool
 	Filename string
-	Records  *Record
-}
-
-type Record struct {
-	PassedRecordFileName    string
-	FailedRecordFileName    string
-	PassedRecordFilePathUrl string
-	FailedRecordFilePathUrl string
+	Records  interface{}
 }

@@ -2,16 +2,97 @@ version: '2'
 
 services:
 
-  test:
-    image: test:test
+  ticket:
+    image: ticket:local
+    container_name: ticket
     restart: always
-    container_name: test
+    env_file: .env
+    ports:
+      - 3003:80
+
+  webserver:
+    image: webserver:local
+    restart: always
+    container_name: webserver
+    env_file: .env
     ports:
       - 3002:80
     volumes:
-        - ./import:/import
-        - ./static:/static
-        - ./templates:/templates
-        - ./uploads:/uploads
+      - ./webserver/import:/import
+      - ./webserver/static:/static
+      - ./webserver/templates:/templates
+      - ./space/local:/locafiles
     environment:
-      - TEST_PORT=:80
+      - FTA_WEBSERVER_STATIC_DIR=/static
+      - FTA_WEBSERVER_WATCH_DIR=/import
+
+  mail:
+    image: mail:local
+    container_name: mail
+    restart: always
+    env_file: .env
+    ports:
+      - 3004:80
+    volumes:
+      - ./mail/templates:/templates
+
+  space:
+    image: space:local
+    container_name: space
+    restart: always
+    env_file: .env
+    ports:
+      - 3005:80
+    volumes:
+      - ./space:/files
+
+
+  # grafana:
+  #   image: grafana/grafana
+  #   ports:
+  #     - 3000:80
+  #   container_name: grafana
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./monitoring/grafana:/var/lib/grafana
+  #   environment:
+  #     GF_SECURITY_ADMIN_USER: admin
+  #     GF_SECURITY_ADMIN_PASSWORD: admin
+
+  # promtail:
+  #   image: grafana/promtail:2.0.0
+  #   container_name: promtail
+  #   restart: unless-stopped
+  #   depends_on:
+  #      - loki
+  #   volumes:
+  #      - /var/log:/var/log
+  #   command: -config.file=/etc/promtail/config.yml
+
+  # loki:
+  #   image: grafana/loki:2.0.0
+  #   container_name: loki
+  #   restart: always
+  #   command: -config.file=/etc/loki/local-config.yaml
+  #   volumes:
+  #     - ./monitoring/loki/data/index:/loki/index
+  #     - ./monitoring/loki/data/chunks:/loki/chunks
+  #     - ./monitoring/loki/local-config.yaml:/etc/loki/local-config.yaml
+
+
+  # node-exporter:
+  #   image: prom/node-exporter:latest
+  #   container_name: node_exporter
+  #   restart: unless-stopped
+
+  # prometheus:
+  #   image: prom/prometheus
+  #   container_name: prometheus
+  #   restart: unless-stopped
+  #   environment:
+  #     - FTA_SERVICE_NAME=prometheus
+  #   volumes:
+  #     - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  #     - ./monitoring/prometheus/data:/var/lib/prometheus
+  #     - ./monitoring/prometheus/data:/prometheus
+  #     - ./monitoring/prometheus/data:/etc/prometheus

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package microsevice.mail;
+option go_package = "mail/rpc/mail";
+
+// Mail microservice
+service Mail {
+  rpc SendProcessedFlightRecordsMail(SendProcessedFlightRecordsMailInput) returns (SendProcessedFlightRecordsMailResponse);
+}
+
+message SendProcessedFlightRecordsMailInput {
+    string AirlineName = 1;
+    string UploadedFileName = 2;
+    string UploadedFilePath = 3;
+    repeated string Processedfiles = 4;
+}
+
+message SendProcessedFlightRecordsMailResponse {
+}

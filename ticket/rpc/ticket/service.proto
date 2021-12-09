@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package microsevice.ticket;
+option go_package = "ticket/rpc/ticket";
+
+// Ticket microservice
+service Ticket {
+  rpc ProcessFlightRecord(ProcessFlightRecordInput) returns (ProcessFlightRecordResponse);
+}
+
+message ProcessFlightRecordInput {
+    string Filename = 1;  
+    bytes FlightRecord = 2;
+}
+
+message ProcessFlightRecordResponse {
+  string AirlineName = 1;
+  string PassedRecordFileName = 2;  
+	string FailedRecordFileName  = 3;    
+	string PassedRecordFilePathUrl = 4;
+	string FailedRecordFilePathUrl = 5;
+}

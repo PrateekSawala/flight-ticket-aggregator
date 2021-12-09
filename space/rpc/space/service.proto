@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package microsevice.space;
+option go_package = "space/rpc/space";
+
+service Space {
+  rpc SaveFile(SaveFileInput) returns (SaveFileResponse);
+  rpc GetFile(GetFileInput) returns (GetFileResponse);
+  rpc DeleteFile(DeleteFileInput) returns (DeleteFileResponse);
+}
+
+message SaveFileInput {
+  string Filepath = 1;
+  string Filename = 2;
+  bytes File = 3;
+}
+
+message SaveFileResponse {
+}
+
+message GetFileInput {
+  string Filepath = 1;
+  string Filename = 2;
+}
+
+message GetFileResponse {
+  bytes File = 1;
+}
+
+message DeleteFileInput {
+  string Filepath = 1;
+  string Filename = 2;
+}
+
+message DeleteFileResponse {
+}

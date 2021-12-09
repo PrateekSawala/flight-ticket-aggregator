@@ -1,31 +1,50 @@
 package logging
 
 import (
-	"fmt"
-
+	// "fmt"
+	// "os"
+	// "time"
+	"github.com/afiskon/promtail-client/promtail"
 	"github.com/sirupsen/logrus"
 )
 
+// Logger enforces specific log message formats
+type Logger struct {
+	Data           map[string]interface{}
+	LogrusEntry    *logrus.Entry
+	promtailClient promtail.Client
+}
+
 // Log is a helper class that enrichens the structured logging
-func Log(input interface{}) *logrus.Entry {
-	log := logrus.WithFields(logrus.Fields{
-		"method": "unkown",
+func Log(input interface{}) *Logger {
+	data := map[string]interface{}{
+		"data": input,
+	}
+	logrusEntry := logrus.WithFields(logrus.Fields{
+		"data": input,
 	})
-	// Check input
+	logger := &Logger{
+		Data:        data,
+		LogrusEntry: logrusEntry,
+	}
 	if input == nil {
-		return log
+		return logger
 	}
 
-	// Check input type
-	switch input.(type) {
-	case string:
-		return log.WithField("method", input)
-	default:
-		// Add raw input
-		rawInput := fmt.Sprintf("%+v", input)
-		if rawInput != "<nil>" {
-			log = log.WithField("input", rawInput)
+	/*
+		// Promtail client
+		promtailLabels := fmt.Sprintf("{env=\"%s\", service=\"%s\", tx=\"%d\"}", os.Getenv("FTA_ENVIRONMENT"), os.Getenv("FTA_SERVICE_NAME"), time.Now().Unix())
+		// Promtail client config
+		conf := promtail.ClientConfig{
+			PushURL:            os.Getenv("FTA_LOKI") + "/api/prom/push",
+			Labels:             promtailLabels,
+			BatchWait:          5 * time.Second,
+			BatchEntriesNumber: 20000,
+			SendLevel:          promtail.DEBUG,
+			PrintLevel:         promtail.ERROR,
 		}
-		return log.WithField("method", input)
-	}
+		promtailClient, _ := promtail.NewClientProto(conf)
+		logger.promtailClient = promtailClient
+	*/
+	return logger
 }
