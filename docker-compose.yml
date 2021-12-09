@@ -78,21 +78,3 @@ services:
   #     - ./monitoring/loki/data/index:/loki/index
   #     - ./monitoring/loki/data/chunks:/loki/chunks
   #     - ./monitoring/loki/local-config.yaml:/etc/loki/local-config.yaml
-
-
-  # node-exporter:
-  #   image: prom/node-exporter:latest
-  #   container_name: node_exporter
-  #   restart: unless-stopped
-
-  # prometheus:
-  #   image: prom/prometheus
-  #   container_name: prometheus
-  #   restart: unless-stopped
-  #   environment:
-  #     - FTA_SERVICE_NAME=prometheus
-  #   volumes:
-  #     - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-  #     - ./monitoring/prometheus/data:/var/lib/prometheus
-  #     - ./monitoring/prometheus/data:/prometheus
-  #     - ./monitoring/prometheus/data:/etc/prometheus
