@@ -5,7 +5,7 @@ WORKDIR /source
 
 COPY go.mod ./
 COPY go.sum ./
-COPY vendor ./
+RUN go mod download
 
 COPY ticket /source/ticket
 COPY domain /source/domain
