@@ -1,8 +1,3 @@
-# FROM scratch
-# ENV FTA_SERVICE_NAME space
-# COPY space /space
-# CMD ["/space"]
-
 # STAGE 1: build
 FROM golang:1.16-alpine as build
  
