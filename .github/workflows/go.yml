@@ -1,0 +1,38 @@
+name: CI/CD
+
+on: [push]
+
+jobs:                                                                                                                                                                                                                                                                                       
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2.0
+    - name: docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}   
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: docker build ticket service
+      run: |
+        docker build -t ticket:dev -f ticket/Dockerfile .
+    - name: docker build mail service
+      run: |
+        docker build -t mail:dev -f mail/Dockerfile .
+    - name: docker build space service
+      run: |
+        docker build -t space:dev -f space/Dockerfile .
+    - name: docker build webserver service
+      run: |
+        docker build -t webserver:dev -f webserver/Dockerfile .
+    - name: docker push
+      run: |
+        docker push ticket:dev
+        docker push mail:dev
+        docker push space:dev
+        docker push webserver:dev
+
+        
+      
+
+    
