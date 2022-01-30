@@ -1,10 +1,5 @@
 package domain
 
-import (
-	"bytes"
-	"encoding/csv"
-)
-
 type FlightRecord struct {
 	FirstName     string
 	LastName      string
@@ -30,11 +25,6 @@ type FileStatus struct {
 	Records  interface{}
 }
 
-type FlightRecordWriter struct {
-	Filename      string
-	Filepath      string
-	File          *bytes.Buffer
-	FileWriter    *csv.Writer
-	IsFileCreated bool
-	TypeRecord    string
+type Error struct {
+	ErrorMessage string `json:"errorMessage"`
 }

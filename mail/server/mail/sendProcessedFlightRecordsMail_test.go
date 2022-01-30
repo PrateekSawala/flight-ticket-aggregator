@@ -8,7 +8,6 @@ import (
 
 	"flight-ticket-aggregator/domain"
 	"flight-ticket-aggregator/mail/rpc/mail"
-
 	"github.com/stretchr/testify/assert"
 )
 

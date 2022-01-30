@@ -1,6 +1,7 @@
 package logging
 
 import (
+	// "fmt"
 	"github.com/sirupsen/logrus"
 )
 

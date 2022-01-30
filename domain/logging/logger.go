@@ -1,6 +1,9 @@
 package logging
 
 import (
+	// "fmt"
+	// "os"
+	// "time"
 	"github.com/afiskon/promtail-client/promtail"
 	"github.com/sirupsen/logrus"
 )

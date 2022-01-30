@@ -10,7 +10,6 @@ import (
 
 	"flight-ticket-aggregator/domain"
 	"flight-ticket-aggregator/ticket/rpc/ticket"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -21,10 +20,9 @@ var (
 func TestInputFlightRecordSuccess(t *testing.T) {
 	// Open the test file
 	filename := domain.TestFlightRecord
+	importfile := fmt.Sprintf("../../test/%s", filename)
 
-	importfile := fmt.Sprintf("../../templates/%s", filename)
-
-	// Read file
+	// read file
 	fileBuffer, err := ioutil.ReadFile(importfile)
 	if err != nil {
 		t.Errorf("Error occured while looking for file %s, Error: %s", filename, err)
@@ -45,7 +43,7 @@ func TestInputFlightRecordSuccess(t *testing.T) {
 func TestInputFlightRecordError(t *testing.T) {
 	// Open the test file
 	filename := domain.TestEmptyFlightRecord
-	importfile := fmt.Sprintf("../../templates/%s", filename)
+	importfile := fmt.Sprintf("../../test/%s", filename)
 
 	fileBuffer, err := ioutil.ReadFile(importfile)
 	if err != nil {

@@ -125,9 +125,6 @@ func (Build) Build() error {
 	writer.Start()
 	// Printing build status to stdout
 	buildStatus := map[string]string{}
-	for _, service := range services {
-		fmt.Fprintf(writer, "Creating build for %s service...\n", service)
-	}
 	// Loop over all service
 	for _, service := range services {
 		servicePath := backend + "/" + service
@@ -144,10 +141,6 @@ func (Build) Build() error {
 		}
 		// Set build status to 'done'
 		buildStatus[service] = done
-		// Update imaging status to stdout
-		for _, s := range services {
-			fmt.Fprintf(writer, "Created build for %s... %s\n", s, buildStatus[s])
-		}
 	}
 	writer.Stop() // flush and stop rendering
 	return nil
@@ -160,7 +153,7 @@ func (Docker) Image() error {
 	// Create multi-line updateable stdout
 	writer := uilive.New()
 	writer.Start()
-	// Printing images status to stdout
+	// Printing imaging status to stdout
 	imageStatus := map[string]string{}
 	for _, service := range services {
 		fmt.Fprintf(writer, "Creating image for %s service...\n", service)
@@ -176,6 +169,11 @@ func (Docker) Image() error {
 			err := sh.Run("docker", "build", "-t", fmt.Sprintf("%s:%s", service, environment), "-f", fmt.Sprintf("%s/Dockerfile", servicePath), fmt.Sprintf("%s/.temp/.", servicePath))
 			if err != nil {
 				fmt.Printf(color.Red("Build:Image docker build error: %s\n"), err)
+			}
+			// Cleanup .temp folder
+			err = sh.Run("rm", "-rf", fmt.Sprint("%s/.temp", servicePath))
+			if err != nil {
+				fmt.Printf(color.Red("Build:Image cp certificate  ... error: %s\n"), err)
 			}
 			// Set build status to 'done'
 			imageStatus[service] = done

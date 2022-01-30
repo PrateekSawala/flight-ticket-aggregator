@@ -2,6 +2,7 @@ package endpoint
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -29,7 +30,7 @@ func TestMakeUploadFlightRecordsHandler(t *testing.T) {
 	testHandler := MakeUploadFlightRecordsHandler(service, endpointLogger)
 
 	// Declare test file
-	testFilePath := "../templates/airline1_2020-10-12_flightRecord.csv"
+	testFilePath := fmt.Sprintf("../templates/airline1_2020-10-12_flightRecord.csv")
 	// Open file
 	testfile, err := os.Open(testFilePath)
 	if err != nil {
@@ -81,7 +82,7 @@ func TestMakeDownloadFlightRecordsHandler(t *testing.T) {
 
 	result := response.Result()
 	assert.Equal(t, http.StatusOK, result.StatusCode)
-	result.Body.Close()
+	err := result.Body.Close()
 
 	// Check result StatusCode
 	if result.StatusCode != http.StatusOK {

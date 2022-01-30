@@ -10,8 +10,8 @@ import (
 func TestIsRecordsValidationSuccess(t *testing.T) {
 	// Declare test record
 	testRecord := domain.FlightRecord{
-		FirstName:     "Abh",
-		LastName:      "Kuj",
+		FirstName:     "Ab",
+		LastName:      "Kumar",
 		PNR:           "ABC123",
 		FareClass:     "F",
 		TravelDate:    "2019-07-31",
@@ -28,8 +28,8 @@ func TestIsRecordsValidationSuccess(t *testing.T) {
 func TestIsRecordsValidationError(t *testing.T) {
 	// Declare test record
 	testRecord := domain.FlightRecord{
-		FirstName:     "Abh",
-		LastName:      "Kuj",
+		FirstName:     "Ab",
+		LastName:      "Kumar",
 		PNR:           "ABC123",
 		FareClass:     "F",
 		TravelDate:    "2019-07-31",
@@ -41,14 +41,4 @@ func TestIsRecordsValidationError(t *testing.T) {
 	}
 	err := IsRecordValid(nil, testRecord)
 	assert.EqualError(t, err, domain.ErrInvalidMail.Error())
-}
-
-func TestIsUploadedFlightRecordValidSuccess(t *testing.T) {
-	filename := "airline1_2020-10-30_flightRecord.csv"
-
-	response, err := IsUploadedFlightRecordValid(filename)
-
-	expectedResponse := &domain.FightRecordInfo{AirlineName: "airline1", Filename: "flightRecord.csv", Filepath: "flightRecord/airline1/2020/10/30"}
-	assert.NoError(t, err)
-	assert.Equal(t, expectedResponse, response)
 }

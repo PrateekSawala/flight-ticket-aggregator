@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 	"html/template"
-	"io/ioutil"
 
 	"flight-ticket-aggregator/domain"
 	"flight-ticket-aggregator/domain/logging"
@@ -22,11 +21,10 @@ func (s *Server) SendProcessedFlightRecordsMail(ctx context.Context, input *mail
 
 	response := &mail.SendProcessedFlightRecordsMailResponse{}
 
-	// Check Inputs
 	if input.AirlineName == domain.Empty || len(input.Processedfiles) == 0 || input.UploadedFileName == domain.Empty || input.UploadedFilePath == domain.Empty {
 		return response, domain.ErrInvalidInput
 	}
-	// Check Airline
+
 	airlineSupportMail, ok := domain.AirlinesMails[input.AirlineName]
 	if !ok {
 		return response, domain.ErrInvalidAirline
@@ -37,14 +35,6 @@ func (s *Server) SendProcessedFlightRecordsMail(ctx context.Context, input *mail
 	m.SetHeader("From", *smtpAccountEmail)
 	m.SetHeader("To", airlineSupportMail)
 	m.SetHeader("Subject", "Processed Flight Records")
-
-	templateIntByte, err := ioutil.ReadFile("/templates/template.html")
-	if err != nil {
-		log.Debugf("Error while reading template file: %s", err)
-		return nil, err
-	}
-
-	templateInt := template.Must(template.New("input.EmailTemplate").Parse(string(templateIntByte)))
 
 	// Set body content of the email template
 	body := template.Must(template.New("Template-Body").Parse(`<p>Please find the processed flight records in the attachment from the uploaded file:{{.File}}</p>`))
@@ -57,16 +47,6 @@ func (s *Server) SendProcessedFlightRecordsMail(ctx context.Context, input *mail
 
 	// Set parameters which will be filled in template
 	body.Execute(bodyContent, paramsBody)
-
-	paramsTemplate := map[string]interface{}{
-		"Body":  template.HTML(string(bodyContent.Bytes())),
-		"Title": "ProcessedFlightRecordsMail",
-	}
-
-	// Init new content buffer
-	content := new(bytes.Buffer)
-	// Parse template and substitute params
-	templateInt.Execute(content, &paramsTemplate)
 
 	m.SetBody("text/html", string(bodyContent.Bytes()))
 
@@ -81,7 +61,7 @@ func (s *Server) SendProcessedFlightRecordsMail(ctx context.Context, input *mail
 		m.AttachReader(document, attachment)
 	}
 
-	err = s.SendMail(m)
+	err := s.SendMail(m)
 	if err != nil {
 		log.Debugf("Error while sending mail: %s", err)
 		return response, err

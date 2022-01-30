@@ -16,7 +16,7 @@ var (
 
 func TestSaveFileSuccess(t *testing.T) {
 	// Read file
-	file, err := ioutil.ReadFile("../../templates/example.txt")
+	file, err := ioutil.ReadFile("../../test/example.txt")
 	if err != nil {
 		t.Errorf("Error while reading file, Error: %s", err)
 		return
@@ -37,7 +37,7 @@ func TestGetFileSuccess(t *testing.T) {
 		return
 	}
 	assert.NoError(t, err)
-	ioutil.WriteFile("../../templates/output.txt", result.File, 777)
+	ioutil.WriteFile("../../test/output.txt", result.File, 777)
 }
 
 func TestDeleteFileSuccess(t *testing.T) {

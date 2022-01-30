@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 
-	"flight-ticket-aggregator/domain"
 	"flight-ticket-aggregator/ticket/rpc/ticket"
 )
 
@@ -20,16 +19,17 @@ func main() {
 }
 
 func processFlightRecord() {
-	filename := domain.TestFlightRecord
-	importfile := fmt.Sprintf("../../ticket/templates/templates/%s", filename)
+	filename := "airline1_2020-10-30_flightRecord.csv"
+
+	importfile := fmt.Sprintf("../../ticket/templates/templates/airline1_2020-10-30_flightRecord.csv")
 	fileBuffer, err := ioutil.ReadFile(importfile)
 	if err != nil {
-		log.Println("Error:", err)
+		log.Println("Error", err)
 		return
 	}
 
 	_, err = client.ProcessFlightRecord(context.Background(), &ticket.ProcessFlightRecordInput{Filename: filename, FlightRecord: fileBuffer})
 	if err != nil {
-		log.Println("Error:", err)
+		log.Println("Error", err)
 	}
 }

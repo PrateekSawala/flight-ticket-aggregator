@@ -3,11 +3,10 @@ package endpoint
 import (
 	"bufio"
 	"context"
+	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"mime/multipart"
 	"sync"
-
-	"github.com/sirupsen/logrus"
 
 	"flight-ticket-aggregator/domain"
 	"flight-ticket-aggregator/domain/system"
@@ -37,7 +36,7 @@ func (s *WebService) UploadFlightRecords(files []*multipart.FileHeader) ([]*doma
 
 	var wg sync.WaitGroup
 
-	for i := range files {
+	for i, _ := range files {
 		wg.Add(1)
 		go func(file *multipart.FileHeader) {
 			// Decrement the counter when the go routine completes
@@ -54,11 +53,11 @@ func (s *WebService) UploadFlightRecords(files []*multipart.FileHeader) ([]*doma
 			fileStatus.Filename = filename
 
 			fileread, err := file.Open()
+			defer fileread.Close()
 			if err != nil {
 				log.Debugf("Error while checking file %s error: %s", filename, err)
 				return
 			}
-			defer fileread.Close()
 
 			// Read the file content
 			bufferReader := bufio.NewReader(fileread)
@@ -81,14 +80,14 @@ func (s *WebService) UploadFlightRecords(files []*multipart.FileHeader) ([]*doma
 				return
 			}
 
-			// // Find processed records path
-			// processedRecords := []string{}
-			// if records.PassedRecordFileName != domain.Empty {
-			// 	processedRecords = append(processedRecords, records.PassedRecordFileName)
-			// }
-			// if records.FailedRecordFileName != domain.Empty {
-			// 	processedRecords = append(processedRecords, records.FailedRecordFileName)
-			// }
+			// Find processed records path
+			processedRecords := []string{}
+			if records.PassedRecordFileName != domain.Empty {
+				processedRecords = append(processedRecords, records.PassedRecordFileName)
+			}
+			if records.FailedRecordFileName != domain.Empty {
+				processedRecords = append(processedRecords, records.FailedRecordFileName)
+			}
 			fileStatus.Records = records
 			fileStatus.Upload = true
 		}(files[i])

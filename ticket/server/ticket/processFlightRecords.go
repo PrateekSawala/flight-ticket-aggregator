@@ -10,6 +10,7 @@ import (
 
 	"flight-ticket-aggregator/domain"
 	"flight-ticket-aggregator/domain/logging"
+	"flight-ticket-aggregator/domain/system"
 	"flight-ticket-aggregator/mail/rpc/mail"
 	"flight-ticket-aggregator/space/rpc/space"
 	"flight-ticket-aggregator/ticket/rpc/ticket"
@@ -30,7 +31,7 @@ func (s *Server) ProcessFlightRecord(ctx context.Context, input *ticket.ProcessF
 	}
 
 	// Check if uploaded flightRecord is valid
-	flightRecordInfoResp, err := IsUploadedFlightRecordValid(input.Filename)
+	flightRecordInfoResp, err := system.IsUploadedFlightRecordValid(input.Filename)
 	if err != nil {
 		return response, err
 	}
@@ -79,15 +80,15 @@ func ProcessRecords(records [][]string, flightRecordInfo *domain.FightRecordInfo
 	log := logging.Log("ProcessRecords")
 	response := &ticket.ProcessFlightRecordResponse{}
 
-	flightRecordName := strings.TrimSuffix(flightRecordInfo.Filename, filepath.Ext(flightRecordInfo.Filename))
-
-	// Declare flightRecord writers
-	flightRecordWriters := map[string]*domain.FlightRecordWriter{}
-	flightRecordWriters[domain.TypeRecordPassed] = &domain.FlightRecordWriter{Filename: fmt.Sprintf("%s_passedRecord.csv", flightRecordName), Filepath: flightRecordInfo.Filepath, TypeRecord: domain.TypeRecordPassed, File: &bytes.Buffer{}, FileWriter: &csv.Writer{}}
-	flightRecordWriters[domain.TypeRecordFailed] = &domain.FlightRecordWriter{Filename: fmt.Sprintf("%s_failedRecord.csv", flightRecordName), Filepath: flightRecordInfo.Filepath, TypeRecord: domain.TypeRecordFailed, File: &bytes.Buffer{}, FileWriter: &csv.Writer{}}
-
+	passedRecord, failedRecord := &bytes.Buffer{}, &bytes.Buffer{}
+	passedRecordWriter, failedRecordWriter := &csv.Writer{}, &csv.Writer{}
+	passedRecordCreated, failedRecordCreated := false, false
 	recordedPNRs := map[string]bool{}
-	// Loop over all records
+
+	recordName := strings.TrimSuffix(flightRecordInfo.Filename, filepath.Ext(flightRecordInfo.Filename))
+	passedRecordFileName := fmt.Sprintf("%s_passedRecord.csv", recordName)
+	failedRecordFileName := fmt.Sprintf("%s_failedRecord.csv", recordName)
+
 	for i := range records {
 		recordEntry := records[i]
 		if i == 0 {
@@ -97,41 +98,67 @@ func ProcessRecords(records [][]string, flightRecordInfo *domain.FightRecordInfo
 			}
 			continue
 		}
-		flightRecordEntry := PrepareFlightRecord(recordEntry)
-		flightRecordWriter := flightRecordWriters[domain.TypeRecordPassed]
-		recordErr := IsRecordValid(recordedPNRs, flightRecordEntry)
-		if recordErr != nil {
-			recordEntry = append(recordEntry, recordErr.Error())
-			flightRecordWriter = flightRecordWriters[domain.TypeRecordFailed]
+		flightRecord := PrepareFlightRecord(recordEntry)
+		recordErr := IsRecordValid(recordedPNRs, flightRecord)
+		if recordErr == nil {
+			if !passedRecordCreated {
+				passedRecordWriterResp, passedRecordError := InitWriter(passedRecord, domain.TypeRecordPassed)
+				if passedRecordError != nil {
+					return response, passedRecordError
+				}
+				passedRecordWriter = passedRecordWriterResp
+				passedRecordCreated = true
+			}
+			if offerCode, passedRecordError := GetDiscountCode(flightRecord.FareClass); passedRecordError == nil {
+				passedRecordError := WriteRecord(passedRecordWriter, append(recordEntry, offerCode))
+				if passedRecordError != nil {
+					log.Errorf("Error while writing flight passed record of file %s,  %+v , error: %s", passedRecordFileName, recordEntry, passedRecordError)
+				}
+				recordedPNRs[flightRecord.PNR] = true
+			}
 		} else {
-			recordEntry = append(recordEntry, GetDiscountCode(flightRecordEntry.FareClass))
+			if !failedRecordCreated {
+				failedRecordWriterResp, failedRecordError := InitWriter(failedRecord, domain.TypeRecordFailed)
+				if failedRecordError != nil {
+					return response, failedRecordError
+				}
+				failedRecordWriter = failedRecordWriterResp
+				failedRecordCreated = true
+			}
+			err := WriteRecord(failedRecordWriter, append(recordEntry, recordErr.Error()))
+			if err != nil {
+				log.Errorf("Error while writing flight failed record of file %s, %+v , error: %s", failedRecordFileName, recordEntry, err)
+			}
+			recordedPNRs[flightRecord.PNR] = true
 		}
-		err := WriteFlightRecord(flightRecordWriter, recordEntry)
-		if err != nil {
-			log.Errorf("Error while writing %s flight record of filename %s with recordEntry %+v , error: %s", flightRecordWriter.TypeRecord, flightRecordWriter.Filename, recordEntry, err)
-		}
-		recordedPNRs[flightRecordEntry.PNR] = true
 	}
-	SaveFlightRecord(flightRecordWriters, response, log)
+	if passedRecordCreated {
+		response.PassedRecordFileName = passedRecordFileName
+		passedRecordWriter.Flush()
+		_, err := spaceService.SaveFile(context.Background(), &space.SaveFileInput{Filename: passedRecordFileName, Filepath: flightRecordInfo.Filepath, File: passedRecord.Bytes()})
+		if err != nil {
+			log.Errorf("Error while saving file to s3 path: %s/%s, error: %s", flightRecordInfo.Filepath, passedRecordFileName, err)
+		} else {
+			response.PassedRecordFilePathUrl = fmt.Sprintf("%s/%s/%s/%s", *webServerHostName, domain.DownloadFlightRecordPath, flightRecordInfo.Filepath, passedRecordFileName)
+		}
+	}
+	if failedRecordCreated {
+		response.FailedRecordFileName = failedRecordFileName
+		failedRecordWriter.Flush()
+		_, err := spaceService.SaveFile(context.Background(), &space.SaveFileInput{Filename: failedRecordFileName, Filepath: flightRecordInfo.Filepath, File: failedRecord.Bytes()})
+		if err != nil {
+			log.Errorf("Error while saving file to s3 path: %s/%s, error: %s", flightRecordInfo.Filepath, failedRecordFileName, err)
+		} else {
+			response.FailedRecordFilePathUrl = fmt.Sprintf("%s/%s/%s/%s", *webServerHostName, domain.DownloadFlightRecordPath, flightRecordInfo.Filepath, failedRecordFileName)
+		}
+	}
 	return response, nil
 }
 
-func WriteFlightRecord(flightRecordWriter *domain.FlightRecordWriter, recordEntry []string) error {
-	if flightRecordWriter.TypeRecord != domain.TypeRecordPassed && flightRecordWriter.TypeRecord != domain.TypeRecordFailed {
-		return domain.ErrInvalidInput
-	}
-	if !flightRecordWriter.IsFileCreated {
-		recordWriterResp, err := InitWriter(flightRecordWriter.File, domain.TypeRecordPassed)
-		if err != nil {
-			return err
-		}
-		flightRecordWriter.FileWriter = recordWriterResp
-		flightRecordWriter.IsFileCreated = true
-	}
-	return WriteRecord(flightRecordWriter.FileWriter, recordEntry)
-}
-
 func InitWriter(buffer *bytes.Buffer, typeRecord string) (*csv.Writer, error) {
+	if typeRecord != domain.TypeRecordPassed && typeRecord != domain.TypeRecordFailed {
+		return nil, domain.ErrInvalidInput
+	}
 	recordWriter := csv.NewWriter(buffer)
 	newEntry := domain.RecordError
 	if typeRecord == domain.TypeRecordPassed {
@@ -155,31 +182,13 @@ func WriteRecord(writer *csv.Writer, recordEntry []string) error {
 	return nil
 }
 
-func SaveFlightRecord(flightRecordWriters map[string]*domain.FlightRecordWriter, response *ticket.ProcessFlightRecordResponse, log *logging.Logger) {
-	for _, flightRecordWriter := range flightRecordWriters {
-		if !flightRecordWriter.IsFileCreated {
-			return
-		}
-		flightRecordWriter.FileWriter.Flush()
-		spacePathUrl := ""
-		_, err := spaceService.SaveFile(context.Background(), &space.SaveFileInput{Filename: flightRecordWriter.Filename, Filepath: flightRecordWriter.Filepath, File: flightRecordWriter.File.Bytes()})
-		if err != nil {
-			log.Errorf("Error while saving file to s3 path: %s/%s, error: %s", flightRecordWriter.Filepath, flightRecordWriter.Filename, err)
-		} else {
-			spacePathUrl = fmt.Sprintf("%s/%s/%s/%s", *webServerHostName, domain.DownloadFlightRecordPath, flightRecordWriter.Filepath, flightRecordWriter.Filename)
-		}
-		if flightRecordWriter.TypeRecord == domain.TypeRecordPassed {
-			response.PassedRecordFileName = flightRecordWriter.Filename
-			response.PassedRecordFilePathUrl = spacePathUrl
-		}
-		if flightRecordWriter.TypeRecord == domain.TypeRecordFailed {
-			response.FailedRecordFileName = flightRecordWriter.Filename
-			response.FailedRecordFilePathUrl = spacePathUrl
-		}
+func GetDiscountCode(class string) (string, error) {
+	if class == "" {
+		return domain.Empty, domain.ErrMissingArgument
 	}
-}
-
-func GetDiscountCode(class string) string {
+	if !system.IsAlphabetic(class) {
+		return domain.Empty, domain.ErrInvalidArgument
+	}
 	code := strings.ToUpper(class)
 	asciiValue := []rune(code)[0]
 	offerCode := domain.Empty
@@ -191,7 +200,7 @@ func GetDiscountCode(class string) string {
 	case asciiValue >= domain.FareClassL && asciiValue <= domain.FareClassR:
 		offerCode = domain.DiscountCode25
 	}
-	return offerCode
+	return offerCode, nil
 }
 
 func PrepareFlightRecord(recordEntry []string) domain.FlightRecord {

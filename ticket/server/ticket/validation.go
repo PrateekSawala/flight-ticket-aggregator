@@ -2,11 +2,9 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"time"
 
 	"flight-ticket-aggregator/domain"
-	"flight-ticket-aggregator/domain/system"
 	"github.com/nyaruka/phonenumbers"
 )
 
@@ -51,16 +49,6 @@ func IsTicketingDateBeforeTravelDate(ticketingDate string, travelDate string) er
 	return nil
 }
 
-func IsFareClassValid(fareClass string) error {
-	if fareClass == "" {
-		return domain.ErrEmptyInput
-	}
-	if !system.IsAlphabetic(fareClass) {
-		return domain.ErrInvalidFareClass
-	}
-	return nil
-}
-
 func IsCabinValid(cabin string) error {
 	if !domain.ValidFlightCabins[cabin] {
 		return domain.ErrInvalidCabin
@@ -93,36 +81,8 @@ func IsRecordValid(recordedPNRs map[string]bool, flightRecord domain.FlightRecor
 	if err := IsPNR(recordedPNRs, flightRecord.PNR); err != nil {
 		return err
 	}
-	if err := IsFareClassValid(flightRecord.FareClass); err != nil {
-		return err
-	}
 	if err := IsCabinValid(flightRecord.BookedCabin); err != nil {
 		return err
 	}
 	return nil
-}
-
-func IsUploadedFlightRecordValid(flightRecord string) (*domain.FightRecordInfo, error) {
-	response := &domain.FightRecordInfo{}
-	splitResponse := strings.Split(flightRecord, "_")
-	if len(splitResponse) != domain.FlightRecordNameEntriesLength {
-		return response, domain.ErrInvalidFilename
-	}
-
-	flightRecordAirline := splitResponse[0]
-	flightRecordUploadedDate := splitResponse[1]
-	flightRecordName := splitResponse[2]
-
-	if !domain.ValidAirlines[flightRecordAirline] {
-		return response, domain.ErrInvalidFilename
-	}
-
-	_, err := time.Parse(domain.FlightRecordTimeFormat, flightRecordUploadedDate)
-	if err != nil {
-		return response, domain.ErrUploadedDate
-	}
-	response.Filepath = fmt.Sprintf("%s/%s/%s", domain.FlightRecordKey, flightRecordAirline, strings.Replace(flightRecordUploadedDate, "-", "/", -1))
-	response.Filename = flightRecordName
-	response.AirlineName = flightRecordAirline
-	return response, nil
 }

@@ -20,7 +20,7 @@ func main() {
 }
 
 func savefile() {
-	file, err := ioutil.ReadFile("../../space/templates/example.txt")
+	file, err := ioutil.ReadFile("example.txt")
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		return
@@ -38,7 +38,7 @@ func getfile() {
 		fmt.Printf("Error: %v\n", err)
 		return
 	}
-	ioutil.WriteFile("../../space/output.txt", result.File, 777)
+	ioutil.WriteFile("output.txt", result.File, 777)
 }
 
 func deletefile() {
