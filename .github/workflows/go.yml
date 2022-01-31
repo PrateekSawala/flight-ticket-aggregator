@@ -9,10 +9,9 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.13
     - name: Debug
       run: |
-        pwd
         echo ${GOPATH}
         echo ${GOROOT}
     - name: Check out code into the Go module directory
