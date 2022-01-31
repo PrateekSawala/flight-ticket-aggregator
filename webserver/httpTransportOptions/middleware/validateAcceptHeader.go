@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
 	"github.com/go-kit/kit/endpoint"
 )
 

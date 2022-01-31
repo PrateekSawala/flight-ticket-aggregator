@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"flight-ticket-aggregator/domain"
-	"flight-ticket-aggregator/ticket/rpc/ticket"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/ticket/rpc/ticket"
 	"github.com/stretchr/testify/assert"
 )
 

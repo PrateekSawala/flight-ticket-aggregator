@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"os"
 
-	"flight-ticket-aggregator/domain/logging"
-	"flight-ticket-aggregator/mail/rpc/mail"
-	"flight-ticket-aggregator/space/rpc/space"
-	"flight-ticket-aggregator/ticket/rpc/ticket"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain/logging"
+	"github.com/PrateekSawala/flight-ticket-aggregator/mail/rpc/mail"
+	"github.com/PrateekSawala/flight-ticket-aggregator/space/rpc/space"
+	"github.com/PrateekSawala/flight-ticket-aggregator/ticket/rpc/ticket"
 )
 
 var (

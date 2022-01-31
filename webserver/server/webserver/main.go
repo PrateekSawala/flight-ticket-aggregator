@@ -7,11 +7,11 @@ import (
 	"os/signal"
 	"syscall"
 
-	"flight-ticket-aggregator/webserver/endpoint"
+	"github.com/PrateekSawala/flight-ticket-aggregator/webserver/endpoint"
 
-	"flight-ticket-aggregator/domain/logging"
-	"flight-ticket-aggregator/space/rpc/space"
-	"flight-ticket-aggregator/ticket/rpc/ticket"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain/logging"
+	"github.com/PrateekSawala/flight-ticket-aggregator/space/rpc/space"
+	"github.com/PrateekSawala/flight-ticket-aggregator/ticket/rpc/ticket"
 )
 
 var (

@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"flight-ticket-aggregator/domain"
-	"flight-ticket-aggregator/mail/rpc/mail"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/mail/rpc/mail"
 )
 
 var (

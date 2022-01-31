@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"flight-ticket-aggregator/domain/logging"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain/logging"
 
 	"github.com/stretchr/testify/assert"
 )

@@ -8,9 +8,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"flight-ticket-aggregator/domain/logging"
-	"flight-ticket-aggregator/domain/system"
-	"flight-ticket-aggregator/ticket/rpc/ticket"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain/logging"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain/system"
+	"github.com/PrateekSawala/flight-ticket-aggregator/ticket/rpc/ticket"
 
 	"github.com/fsnotify/fsnotify"
 )

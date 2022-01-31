@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"testing"
 
-	"flight-ticket-aggregator/space/rpc/space"
+	"github.com/PrateekSawala/flight-ticket-aggregator/space/rpc/space"
 	"github.com/stretchr/testify/assert"
 )
 

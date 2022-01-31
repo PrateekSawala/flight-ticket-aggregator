@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"testing"
 
-	"flight-ticket-aggregator/domain/logging"
-	"flight-ticket-aggregator/space/rpc/space"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain/logging"
+	"github.com/PrateekSawala/flight-ticket-aggregator/space/rpc/space"
 	"github.com/stretchr/testify/assert"
 
-	"flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
 )
 
 func TestUploadFlightRecordError(t *testing.T) {

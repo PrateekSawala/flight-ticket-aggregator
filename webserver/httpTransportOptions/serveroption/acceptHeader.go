@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
 )
 
 func ExtractAcceptHeaderIntoContext(ctx context.Context, r *http.Request) context.Context {

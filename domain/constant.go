@@ -88,7 +88,7 @@ const (
 
 	TemplateFolder = "templates"
 	UploadFolder   = "uploads"
-	ProjectFolder  = "Flight-Ticket-Aggregator"
+	ProjectFolder  = "github.com/PrateekSawala/flight-ticket-aggregator"
 
 	/* Flight Record Entries */
 

@@ -8,12 +8,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"flight-ticket-aggregator/domain"
-	"flight-ticket-aggregator/domain/logging"
-	"flight-ticket-aggregator/domain/system"
-	"flight-ticket-aggregator/mail/rpc/mail"
-	"flight-ticket-aggregator/space/rpc/space"
-	"flight-ticket-aggregator/ticket/rpc/ticket"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain/logging"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain/system"
+	"github.com/PrateekSawala/flight-ticket-aggregator/mail/rpc/mail"
+	"github.com/PrateekSawala/flight-ticket-aggregator/space/rpc/space"
+	"github.com/PrateekSawala/flight-ticket-aggregator/ticket/rpc/ticket"
 )
 
 func (s *Server) ProcessFlightRecord(ctx context.Context, input *ticket.ProcessFlightRecordInput) (*ticket.ProcessFlightRecordResponse, error) {

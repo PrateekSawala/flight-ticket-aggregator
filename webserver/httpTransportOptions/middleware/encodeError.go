@@ -8,7 +8,7 @@ import (
 	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/sirupsen/logrus"
 
-	"flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
 )
 
 func MakeEncodeErrorFunc(logger *logrus.Entry) httptransport.ErrorEncoder {

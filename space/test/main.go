@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"flight-ticket-aggregator/space/rpc/space"
+	"github.com/PrateekSawala/flight-ticket-aggregator/space/rpc/space"
 )
 
 var (

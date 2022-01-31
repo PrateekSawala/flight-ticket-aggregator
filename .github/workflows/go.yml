@@ -9,13 +9,15 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.13
-    - name: Debug
-      run: |
-        echo ${GOPATH}
-        echo ${GOROOT}
+        go-version: 1.16
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
+    - name: Debug
+      run: |
+        pwd
+        go env
+        echo ${GOPATH}
+        echo ${GOROOT}
     - name: docker login
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}   

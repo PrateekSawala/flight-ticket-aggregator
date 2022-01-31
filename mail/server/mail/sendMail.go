@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/go-mail/mail"
 
-	"flight-ticket-aggregator/domain"
-	"flight-ticket-aggregator/domain/logging"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain/logging"
 )
 
 func (s *Server) SendMail(message *mail.Message) error {

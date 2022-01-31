@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
 	"github.com/nyaruka/phonenumbers"
 )
 

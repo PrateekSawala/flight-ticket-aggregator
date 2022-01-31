@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"flight-ticket-aggregator/domain/logging"
-	"flight-ticket-aggregator/space/rpc/space"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain/logging"
+	"github.com/PrateekSawala/flight-ticket-aggregator/space/rpc/space"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"

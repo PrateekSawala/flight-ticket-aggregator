@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-kit/kit/endpoint"
 
-	"flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
 )
 
 func makeValidateUploadedFlightRecordEndpoint(s WebService) endpoint.Endpoint {

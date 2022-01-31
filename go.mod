@@ -1,21 +1,20 @@
-module flight-ticket-aggregator
+module github.com/PrateekSawala/flight-ticket-aggregator
 
-go 1.13
+go 1.16
 
 require (
 	github.com/afiskon/promtail-client v0.0.0-20190305142237-506f3f921e9c
-	github.com/aws/aws-sdk-go v1.41.9
+	github.com/aws/aws-sdk-go v1.42.44
 	github.com/bclicn/color v0.0.0-20180711051946-108f2023dc84
-	github.com/fsnotify/fsnotify v1.4.9
+	github.com/fsnotify/fsnotify v1.5.1
 	github.com/go-kit/kit v0.12.0
 	github.com/go-mail/mail v2.3.1+incompatible
 	github.com/gosuri/uilive v0.0.4
 	github.com/magefile/mage v1.12.1
-	github.com/nyaruka/phonenumbers v1.0.68
+	github.com/nyaruka/phonenumbers v1.0.74
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0
-	github.com/twitchtv/twirp v8.1.0+incompatible
-	golang.org/x/sys v0.0.0-20220128215802-99c3d69c2c27 // indirect
+	github.com/twitchtv/twirp v8.1.1+incompatible
 	google.golang.org/protobuf v1.27.1
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/mail.v2 v2.3.1 // indirect

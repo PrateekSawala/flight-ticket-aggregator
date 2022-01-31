@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"flight-ticket-aggregator/ticket/rpc/ticket"
+	"github.com/PrateekSawala/flight-ticket-aggregator/ticket/rpc/ticket"
 )
 
 var (

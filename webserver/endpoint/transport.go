@@ -11,7 +11,7 @@ import (
 	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/sirupsen/logrus"
 
-	"flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
 )
 
 func MakeUploadFlightRecordsHandler(service WebService, logger *logrus.Entry) http.Handler {

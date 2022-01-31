@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
 	"github.com/stretchr/testify/assert"
 )
 

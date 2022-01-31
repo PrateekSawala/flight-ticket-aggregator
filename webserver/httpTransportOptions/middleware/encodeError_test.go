@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
 
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"

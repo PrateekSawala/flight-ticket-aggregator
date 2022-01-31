@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"testing"
 
-	"flight-ticket-aggregator/domain"
-	"flight-ticket-aggregator/mail/rpc/mail"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/mail/rpc/mail"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
 )
 
 func DecodeUploadFileRequest(_ context.Context, request *http.Request) (interface{}, error) {

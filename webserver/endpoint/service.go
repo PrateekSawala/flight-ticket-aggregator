@@ -8,10 +8,10 @@ import (
 	"mime/multipart"
 	"sync"
 
-	"flight-ticket-aggregator/domain"
-	"flight-ticket-aggregator/domain/system"
-	"flight-ticket-aggregator/space/rpc/space"
-	"flight-ticket-aggregator/ticket/rpc/ticket"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain"
+	"github.com/PrateekSawala/flight-ticket-aggregator/domain/system"
+	"github.com/PrateekSawala/flight-ticket-aggregator/space/rpc/space"
+	"github.com/PrateekSawala/flight-ticket-aggregator/ticket/rpc/ticket"
 )
 
 type Service interface {
